@@ -88,8 +88,36 @@ public:
     return value;
   }
 
-  int deleteByValue(int val)
+  void deleteByValue(int val)
   {
+      if (head != nullptr)
+      {
+        if (head == tail && head->data == val)
+        {
+          delete head;
+          head = tail = nullptr;
+        }
+        else if (val == head->data)
+        {
+          Node *temp = head;
+          head = head->next;
+          delete temp;
+        }
+        else
+        {
+          Node *prev, *temp;
+          for (prev = head, temp = head->next; temp != nullptr && !(temp->data != val); prev = prev->next, temp = temp->next)
+          {
+            if (temp != 0)
+            {
+              prev->next = temp->next;
+              if (temp == tail)
+                tail = prev;
+              delete temp;
+            }
+          }
+        }
+      }
   }
 
   void printLinkedList()
@@ -107,10 +135,15 @@ int main()
 {
   SingleLinkedList *list = new SingleLinkedList();
   list->printLinkedList();
+  cout << '\n';
   list->addToTail(1);
   list->addToTail(2);
   list->addToTail(3);
   list->printLinkedList();
+  cout << '\n';
+  list->deleteByValue(2);
+  list->printLinkedList();
+  cout << '\n';
 
   return 0;
 }
